@@ -1,0 +1,157 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Swaraj Hardware Brand Colors */
+    /* Background: Light Gray #F2F2F2 */
+    --background: 0 0% 95%;
+    /* #F2F2F2 */
+    --foreground: 199 82% 18%;
+    /* #083D52 Dark Blue */
+
+    --card: 0 0% 100%;
+    /* white cards */
+    --card-foreground: 199 82% 18%;
+    /* #083D52 */
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 199 82% 18%;
+
+    /* Primary = Teal Blue #2D96A8 */
+    --primary: 188 57% 42%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Primary glow for hover effects */
+    --primary-glow: 188 57% 52%;
+
+    /* Secondary = Light Teal #6FB9C6 */
+    --secondary: 187 38% 61%;
+    --secondary-foreground: 199 82% 12%;
+
+    --muted: 200 20% 92%;
+    --muted-foreground: 199 30% 40%;
+
+    --accent: 188 57% 42%;
+    /* Teal Blue accent */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 199 30% 80%;
+    --input: 0 0% 98%;
+    --ring: 188 57% 42%;
+
+    --radius: 1rem;
+
+    /* Brand Gradients */
+    --gradient-brand: linear-gradient(135deg, #083D52 0%, #2D96A8 60%, #6FB9C6 100%);
+    --gradient-teal: linear-gradient(135deg, #2D96A8 0%, #6FB9C6 100%);
+    --gradient-dark: linear-gradient(180deg, #083D52 0%, #0A2E3E 100%);
+    --gradient-hero: linear-gradient(180deg, rgba(8, 61, 82, 0.30) 0%, rgba(10, 46, 62, 0.50) 60%, rgba(8, 61, 82, 0.70) 100%);
+    --gradient-card: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(242, 242, 242, 0.80));
+
+    /* Gold kept as alias → now Teal accent */
+    --gradient-gold: linear-gradient(135deg, #2D96A8 0%, #6FB9C6 50%, #2D96A8 100%);
+
+    --shadow-brand: 0 20px 60px -15px rgba(45, 150, 168, 0.35);
+    --shadow-elegant: 0 30px 80px -20px rgba(8, 61, 82, 0.20);
+    --shadow-glow: 0 0 40px rgba(45, 150, 168, 0.30);
+
+    --transition-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: #F2F2F2;
+    background-image:
+      radial-gradient(at 20% 0%, rgba(45, 150, 168, 0.10) 0px, transparent 50%),
+      radial-gradient(at 80% 100%, rgba(111, 185, 198, 0.08) 0px, transparent 50%);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: 'Playfair Display', serif;
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer components {
+
+  /* Glass card — light version */
+  .glass {
+    @apply backdrop-blur-xl border border-border/60;
+    background: rgba(255, 255, 255, 0.80);
+    box-shadow: 0 4px 24px rgba(8, 61, 82, 0.08);
+  }
+
+  /* Brand gradient text — Teal */
+  .gold-text {
+    background: linear-gradient(135deg, #2D96A8 0%, #083D52 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Brand gradient background — Teal button / icon bg */
+  .gold-bg {
+    background: linear-gradient(135deg, #2D96A8 0%, #083D52 100%);
+  }
+
+  .container-px {
+    @apply px-5 sm:px-8 lg:px-12;
+  }
+
+  .section {
+    @apply py-20 md:py-28;
+  }
+
+  .hairline {
+    @apply h-px w-12;
+    background: #2D96A8;
+  }
+}
+
+@layer utilities {
+  .shadow-gold {
+    box-shadow: var(--shadow-brand);
+  }
+
+  .shadow-elegant {
+    box-shadow: var(--shadow-elegant);
+  }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .marquee {
+    animation: marquee 90s linear infinite;
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}

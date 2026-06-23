@@ -1,0 +1,19 @@
+{
+  "headers": [
+    {
+      "source": "/(assets|swaraj _products|banner_image|company_logo)/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
