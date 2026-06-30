@@ -23,7 +23,7 @@ const slides = [
     image: "/banner_image/banner2.webp",
     mobileImage: "/mobile-banner/mo_banner2.webp",
     tagline: "Your one-stop destination for all your hardware needs",
-    location: "Swaraj Hardware at Silver Star Complex, Chandlodiya",
+    location: "Swaraj Hardware, at Silver Star Complex, Chandlodiya",
     notice: "We do not have any other Branches.",
   },
   {
