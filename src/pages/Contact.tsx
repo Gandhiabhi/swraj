@@ -7,7 +7,7 @@ import { MapPin, Phone, Clock, Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 // 🔴 PLACE YOUR CONTACT LEADS GOOGLE SCRIPT WEBHOOK URL HERE
-const CONTACT_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwVCgLr9aFwRs2sBk4YW4dIRNFzOdihNHLHjNd3tdr6lLR0o4yVOaS3jY8HtA3a9VeCGQ/exec";
+const CONTACT_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzhDN-7f8NYM54JhhAc-q6flX6hCgYbnzy9bwZE3NKapirdpojvxNqzCN5AVpeT8Q0zgQ/exec";
 
 const schema = z.object({
   name: z.string().trim().min(2, "Please enter your name").max(80),

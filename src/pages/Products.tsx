@@ -112,7 +112,7 @@ export default function Products() {
     };
 
     // 🔴 PLACE YOUR GOOGLE SCRIPT WEBHOOK URL HERE
-    const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwjBtdJSy-B-gjRDVtAXWXyGwtLdWLx36CWboFBAZRjMabJ6CS38sveUv3oSOpI_fQR/exec";
+    const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyNSODdgRVVunc3wQcFk6NCTgOSCK5PShfQA6Di75Nlq3QGXLENngybxk11LkcMGw0/exec";
 
     try {
       if (WEBHOOK_URL && WEBHOOK_URL !== "YOUR_GOOGLE_APPS_SCRIPT_WEBHOOK_URL") {
