@@ -9,6 +9,7 @@ import Services from "./pages/Services.tsx";
 import Products from "./pages/Products.tsx";
 import Contact from "./pages/Contact.tsx";
 import ThankYou from "./pages/ThankYou.tsx";
+import Sitemap from "./pages/Sitemap.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/products" element={<Products />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/thank-you" element={<ThankYou />} />
+          <Route path="/sitemap" element={<Sitemap />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
