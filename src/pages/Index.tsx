@@ -44,6 +44,12 @@ const features = [
   { icon: Layers, title: "Wide Range", desc: "Thousands of SKUs under one roof." }
 ];
 
+const heroStats = [
+  ["25+", "Years"],
+  ["75K+", "Satisfied Customers"],
+  ["250+", "Brands"],
+] as const;
+
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [prevSlide, setPrevSlide] = useState<number | null>(null);
@@ -70,7 +76,7 @@ export default function Home() {
       description="Premium hardware & interior solutions in Chandlodiya, Ahmedabad. Door fittings, kitchen accessories, bathroom fittings, laminates from Europa, Godrej, Hettich & Yale."
     >
       {/* HERO */}
-      <section className="relative -mt-24 min-h-[100svh] flex items-start">
+      <section className="relative -mt-24 min-h-[100svh] flex flex-col">
         {/* Background image layer: all slides pre-rendered, GPU-composited crossfade via CSS opacity */}
         <div className="absolute inset-0 overflow-hidden">
           {slides.map((slide, i) => {
@@ -126,10 +132,10 @@ export default function Home() {
         </div>
 
         {/* Content: pt-32 on mobile and md:pt-40 on desktop keeps text close to logo/navbar but safely below it */}
-        <div className="relative container-px w-full pt-32 sm:pt-36 md:pt-40 pb-24 z-20">
-          {/* Stable height wrapper so both exiting and entering text stacks without collapsing layout */}
-          <div className="relative max-w-3xl" style={{ minHeight: "520px" }}>
-            <AnimatePresence>
+        <div className="relative container-px w-full flex-1 pt-28 sm:pt-32 md:pt-40 pb-20 md:pb-28 z-20">
+          {/* Desktop: fixed min-height for crossfade. Mobile: natural flow so content never overlaps sections below. */}
+          <div className="relative max-w-3xl md:min-h-[520px]">
+            <AnimatePresence mode="wait">
               <motion.div
                 key={currentSlide}
                 initial="hidden"
@@ -140,7 +146,7 @@ export default function Home() {
                   visible: { transition: { staggerChildren: 0.08 } },
                   exit: { transition: { staggerChildren: 0.03, staggerDirection: -1 } },
                 }}
-                className="absolute inset-0"
+                className="relative md:absolute md:inset-0"
               >
                 {/* We wrap the three tags in a flex-col container so they stack in three separate rows */}
                 <div className="flex flex-col items-start gap-4 mb-8">
@@ -166,11 +172,11 @@ export default function Home() {
                       visible: { opacity: 1, y: 0, transition: { duration: 0.50, ease: [0.22, 1, 0.36, 1] } },
                       exit: { opacity: 0, y: -8, transition: { duration: 0.18, ease: "easeIn" } },
                     }}
-                    className="flex items-center gap-2 px-4 py-2 rounded-full cursor-pointer hover:bg-[rgba(45,150,168,0.35)] transition-all duration-300 group/badge"
+                    className="flex items-center gap-2 px-4 py-2 rounded-full cursor-pointer hover:bg-[rgba(45,150,168,0.35)] transition-all duration-300 group/badge max-w-full flex-wrap"
                     style={{ background: "rgba(45,150,168,0.25)", border: "1px solid rgba(111,185,198,0.40)", backdropFilter: "blur(12px)" }}
                   >
                     <Sparkles className="size-3.5" style={{ color: "#6FB9C6" }} />
-                    <span className="text-xs uppercase tracking-[0.2em] text-white/90">{slides[currentSlide].location}</span>
+                    <span className="text-xs uppercase tracking-[0.15em] sm:tracking-[0.2em] text-white/90 leading-snug">{slides[currentSlide].location}</span>
                     <MapPin className="size-3.5 text-white/80 group-hover/badge:text-[#6FB9C6] transition-colors ml-0.5" />
                   </motion.a>
 
@@ -237,34 +243,34 @@ export default function Home() {
                     visible: { opacity: 1, y: 0, transition: { duration: 0.50, ease: [0.22, 1, 0.36, 1] } },
                     exit: { opacity: 0, y: -6, transition: { duration: 0.15, ease: "easeIn" } },
                   }}
-                  className="mt-10 flex flex-wrap gap-4"
+                  className="mt-8 sm:mt-10 flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4"
                 >
                   <Link
                     to="/products"
-                    className="group inline-flex items-center gap-2 px-7 py-4 rounded-2xl font-semibold transition-all hover:scale-105"
+                    className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 sm:py-4 rounded-2xl font-semibold transition-all hover:scale-105"
                     style={{ background: "linear-gradient(135deg,#2D96A8 0%,#083D52 100%)", color: "#fff", boxShadow: "0 8px 32px rgba(45,150,168,0.40)" }}
                   >
                     Explore Products <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                   </Link>
                   <Link
                     to="/contact"
-                    className="inline-flex items-center gap-2 px-7 py-4 rounded-2xl font-medium transition-colors"
+                    className="inline-flex items-center justify-center gap-2 px-7 py-3.5 sm:py-4 rounded-2xl font-medium transition-colors"
                     style={{ background: "rgba(255,255,255,0.12)", border: "1.5px solid rgba(255,255,255,0.35)", color: "#fff", backdropFilter: "blur(12px)" }}
                   >
                     <Phone className="size-4" /> Contact Us
                   </Link>
                 </motion.div>
 
-                {/* Stats */}
+                {/* Stats — desktop only (mobile has dedicated section below hero) */}
                 <motion.div
                   variants={{
                     hidden: { opacity: 0, y: 14 },
                     visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
                     exit: { opacity: 0, transition: { duration: 0.20 } },
                   }}
-                  className="mt-14 grid grid-cols-3 gap-6 max-w-lg"
+                  className="mt-14 hidden md:grid grid-cols-3 gap-6 max-w-lg"
                 >
-                  {[["25+", "Years"], ["75K+", "Satisfied Customers"], ["250+", "Brands"]].map(([n, l]) => (
+                  {heroStats.map(([n, l]) => (
                     <div key={l}>
                       <div
                         className="text-2xl md:text-3xl font-display font-semibold"
@@ -278,27 +284,42 @@ export default function Home() {
             </AnimatePresence>
           </div>
 
-          {/* Slide Indicators */}
-          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-3">
-            {slides.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => handleSlideChange(i)}
-                className={`h-1.5 rounded-full transition-all duration-500 ${i === currentSlide ? "w-8 bg-[#6FB9C6]" : "w-2 bg-white/30 hover:bg-white/50"}`}
-                aria-label={`Go to slide ${i + 1}`}
-              />
-            ))}
-          </div>
+        </div>
+
+        {/* Slide Indicators — pinned to hero bottom, always below content */}
+        <div className="relative z-30 flex justify-center gap-3 pb-6 md:pb-8 pt-2">
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => handleSlideChange(i)}
+              className={`h-2 rounded-full transition-all duration-500 ${i === currentSlide ? "w-8 bg-[#6FB9C6]" : "w-2 bg-white/40 hover:bg-white/60"}`}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
         </div>
       </section>
 
+      {/* Mobile Stats — separate section so it never overlaps dealers */}
+      <section className="md:hidden relative z-10 py-8 border-b border-[#2D96A8]/20" style={{ background: "linear-gradient(180deg, #083D52 0%, #0A4A60 100%)" }}>
+        <div className="container-px grid grid-cols-3 gap-3 sm:gap-6">
+          {heroStats.map(([n, l]) => (
+            <div key={l} className="text-center">
+              <div
+                className="text-xl sm:text-2xl font-display font-semibold"
+                style={{ background: "linear-gradient(135deg,#6FB9C6 0%,#2D96A8 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}
+              >{n}</div>
+              <div className="text-[9px] sm:text-[10px] uppercase tracking-wider sm:tracking-widest mt-1 leading-tight" style={{ color: "rgba(255,255,255,0.65)" }}>{l}</div>
+            </div>
+          ))}
+        </div>
+      </section>
 
-      <section className="py-12 border-y border-border/60 bg-card/30 overflow-hidden">
+      <section className="relative z-10 py-12 border-y border-border/60 bg-card overflow-hidden">
         <div className="text-center text-xs uppercase tracking-[0.3em] text-muted-foreground mb-10">Authorised dealers of</div>
         <div className="relative">
-          <div className="flex w-max marquee gap-20 px-8 items-center">
+          <div className="flex w-max marquee gap-10 sm:gap-16 md:gap-20 px-6 sm:px-8 items-center">
             {[...brands, ...brands].map((b, i) => (
-              <div key={i} className="flex items-center justify-center h-12 w-36 hover:scale-110 transition-all duration-500">
+              <div key={i} className="flex items-center justify-center h-10 sm:h-12 w-28 sm:w-36 hover:scale-110 transition-all duration-500">
                 <img src={b.logo} alt={b.name} className="max-h-full max-w-full object-contain drop-shadow-sm" />
               </div>
             ))}
