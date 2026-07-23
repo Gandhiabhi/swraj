@@ -13,7 +13,7 @@ export default function Footer() {
           <div className="flex items-center gap-3 mb-5">
             <div className="h-14 w-auto overflow-hidden rounded-xl bg-white shadow-[0_4px_16px_rgba(0,0,0,0.25)] flex items-center">
               <img
-                src="/pdf_page-0001.jpg"
+                src="/favicon.jpg"
                 alt="Swaraj Hardware Logo"
                 className="h-14 w-auto object-contain"
               />

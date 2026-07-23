@@ -46,7 +46,7 @@ export default function Navbar() {
           <Link to="/" className="flex items-center gap-3 group">
             <div className="h-20 sm:h-24 w-auto overflow-hidden rounded-xl shadow-[0_4px_16px_rgba(45,150,168,0.25)] bg-white flex items-center transition-all duration-500">
               <img
-                src="/pdf_page-0001.jpg"
+                src="/favicon.jpg"
                 alt="Swaraj Hardware Logo"
                 className="h-20 sm:h-24 w-auto object-contain transition-all duration-500"
               />
