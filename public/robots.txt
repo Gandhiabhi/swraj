@@ -12,5 +12,13 @@ Allow: /
 
 User-agent: *
 Allow: /
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+Disallow: /wp-content/
+Disallow: /cgi-bin/
+Disallow: /node_modules/
+Disallow: /src/
+Disallow: /*.php$
+Disallow: /*.env$
 
 Sitemap: https://swarajhardware.com/sitemap.xml

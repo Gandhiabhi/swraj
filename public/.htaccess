@@ -1,46 +1,116 @@
-# Cache control for static assets (images, fonts, styles, scripts)
+# =============================================================================
+# Swaraj Hardware — static Vite/React SPA hardening for Hostinger (Apache/LiteSpeed)
+# This is NOT a PHP/WordPress site. PHP execution is intentionally disabled.
+# =============================================================================
+
+# Serve only the SPA entry. Never prefer PHP defaults.
+DirectoryIndex index.html
+
+# Hide directory listings (stops hackers browsing folders)
+Options -Indexes -MultiViews
+Options -ExecCGI
+
+# -----------------------------------------------------------------------------
+# Kill PHP / server-side script execution (blocks webshells even if uploaded)
+# -----------------------------------------------------------------------------
+<IfModule mod_php.c>
+  php_flag engine off
+</IfModule>
+<IfModule mod_php7.c>
+  php_flag engine off
+</IfModule>
+<IfModule mod_php8.c>
+  php_flag engine off
+</IfModule>
+<IfModule LiteSpeed>
+  php_flag engine off
+</IfModule>
+
+# Block HTTP access to dangerous script / backup / config files
+# (Apache already hides .htaccess; this stops webshells & leaked configs)
+<FilesMatch "(?i)\.(php|phtml|php3|php4|php5|php7|php8|phar|cgi|pl|py|asp|aspx|shtml|sh|bash|exe|dll|ini|env|log|sql|bak|old|swp)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+# Never expose package / source metadata if accidentally uploaded
+<FilesMatch "(?i)^(package\.json|package-lock\.json|composer\.json|composer\.lock|\.env.*|Dockerfile)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+# Block hidden / dotfiles (except .well-known for SSL)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Force HTTPS
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # Deny hidden paths except .well-known
+  RewriteRule "(^|/)\.(?!well-known/)" - [F,L]
+
+  # Deny common malware / WordPress attack paths even if folders exist
+  RewriteRule ^(wp-admin|wp-includes|wp-content|wordpress|cgi-bin|vendor|node_modules|src)/ - [F,L,NC]
+  RewriteRule (^|/)(xmlrpc\.php|wp-login\.php|wp-cron\.php|admin\.php|shell\.php|c99\.php|r57\.php|alfa\.php|wso\.php)$ - [F,L,NC]
+
+  # Deny any leftover server-side scripts by extension
+  RewriteRule \.(php|phtml|php[3-8]|phar|cgi|pl|py|asp|aspx|shtml)$ - [F,L,NC]
+
+  # SPA: keep real static files; send unknown routes to index.html
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-l
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# -----------------------------------------------------------------------------
+# Security headers
+# -----------------------------------------------------------------------------
+<IfModule mod_headers.c>
+  Header always unset X-Powered-By
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+  Header always set Cross-Origin-Opener-Policy "same-origin-allow-popups"
+  # HSTS — only after HTTPS is confirmed working
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+  <FilesMatch "\.(ico|pdf|jpg|jpeg|png|gif|webp|svg|js|css|mp4|mov|woff2?|ttf|otf)$">
+    Header set Cache-Control "max-age=31536000, public"
+  </FilesMatch>
+</IfModule>
+
+# -----------------------------------------------------------------------------
+# Cache (performance only)
+# -----------------------------------------------------------------------------
 <IfModule mod_expires.c>
   ExpiresActive On
-  
-  # Images
   ExpiresByType image/jpeg "access plus 1 year"
   ExpiresByType image/gif "access plus 1 year"
   ExpiresByType image/png "access plus 1 year"
   ExpiresByType image/webp "access plus 1 year"
   ExpiresByType image/svg+xml "access plus 1 year"
   ExpiresByType image/x-icon "access plus 1 year"
-  
-  # Video
   ExpiresByType video/mp4 "access plus 1 year"
-  ExpiresByType video/mpeg "access plus 1 year"
-  ExpiresByType video/quicktime "access plus 1 year"
-
-  # CSS, JavaScript
   ExpiresByType text/css "access plus 1 month"
   ExpiresByType text/javascript "access plus 1 month"
   ExpiresByType application/javascript "access plus 1 month"
-  ExpiresByType application/x-javascript "access plus 1 month"
-
-  # Fonts
   ExpiresByType font/ttf "access plus 1 year"
   ExpiresByType font/woff "access plus 1 year"
   ExpiresByType font/woff2 "access plus 1 year"
-  ExpiresByType font/otf "access plus 1 year"
-</IfModule>
-
-<IfModule mod_headers.c>
-  <FilesMatch "\.(ico|pdf|jpg|jpeg|png|gif|webp|svg|js|css|mp4|mov)$">
-    Header set Cache-Control "max-age=31536000, public"
-  </FilesMatch>
-</IfModule>
-
-# SPA Routing Support for React Router on Apache / Hostinger
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteBase /
-  RewriteRule ^index\.html$ - [L]
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{REQUEST_FILENAME} !-l
-  RewriteRule . /index.html [L]
 </IfModule>
